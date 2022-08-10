@@ -1,3 +1,9 @@
 body {
-    background-color: aqua;
+    background-color: rgb(210, 214, 214);
+}
+
+.MainView {
+    display: grid;
+    margin: auto;
+    border: solid black 1px;
 }
