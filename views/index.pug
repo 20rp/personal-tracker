@@ -4,26 +4,14 @@ block layout-content
     div.TitleView
         h1 Personal Tracker
         div.MainView
-            form(id="main-form" method="POST" action="/tracker")
-                //- input(id="water-intake" placeholder="Enter Water Intake")
-                select(id="water-select")
-                    option(value="1") 1 Glass
-                    br
-                    option(value="2") 2 Glasses
-                    br
-                    option(value="3") 3 Glasses
-                    br
-                    option(value="4") 4 Glasses
-                    br
-                    option(value="5") 5 Glasses
-                    br
-                    option(value="6") 6 Glasses
-                    br
-                    option(value="7") 7 Glasses
-                    br
-                    option(value="8") 8 Glasses
-                div.buttons(name="buttons")
-                    label Have you urinated since the last check?
-                    br
-                    button(name="yes-button" type="button" id="yes-button") Yes
-                    button(name="no-button" type="button" id="no-button") No
+            form(id="main-form" method="POST" action="/personal-tracker")
+                select(name="select")
+                    option(value="1") 1
+                    option(value="2") 2
+                    option(value="3") 3
+                    option(value="4") 4
+                    option(value="5") 5
+                    option(value="6") 6
+                    option(value="7") 7
+                    option(value="8") 8
+                button.btn-primary(type="submit") Submit

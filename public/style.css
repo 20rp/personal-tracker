@@ -1,9 +1,15 @@
 body {
-    background-color: rgb(210, 214, 214);
+    background-color: rgba(178, 181, 184, 0.311);
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 .MainView {
     display: grid;
     margin: auto;
     border: solid black 1px;
+    text-align: center;
+}
+
+h1 {
+    text-align: center;
 }
