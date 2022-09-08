@@ -13,8 +13,12 @@ const fs = require("fs");
 
 const app = express();
 const port = process.env.PORT || "8000";
-const header = "    Glasses Drunk   |   Time Drunk  |   ";
+const header = "    Glasses Drunk   |   Time Drunk  |   Day Drunk";
 const newLine = "\n";
+const tabulator = "     ";
+
+const file = 'logs/tracking.txt';
+
 
 
 /**
@@ -28,8 +32,8 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 app.use(express.static(path.join(__dirname, "public")));
 
-function fileWriter(content, flag) {
-    fs.writeFile("./logs/tracking.txt", content, { flag: flag }, err => {
+function fileWriter(content, fileFlag) {
+    fs.writeFileSync(file, content, { flag: fileFlag }, err => {
         if (err) {
             console.error(err);
         }
@@ -43,21 +47,30 @@ function fileWriter(content, flag) {
 
 app.get("/", (req, res) => {
 
-// TODO: check for if file is empty, if not write the header.
-
-fileWriter(header, "w+");
-fileWriter(newLine, "a+");
-
+if (fs.existsSync(file)) {
+    if (fs.readFileSync(file).length === 0) {
+        fileWriter(header, "w+");
+        fileWriter(newLine, "a+");
+    }
+}
     res.render("index", {
         title: "Index"
     });
 });
 
 app.post("/personal-tracker", (req, res) => {
+    const currentDate = new Date();
     let glasses = req.body.select;
 
-    fileWriter(glasses, "a+");
-    fileWriter(newLine, "a+");
+    if (fs.existsSync(file)) {
+        if (fs.readFileSync(file).length > 1) {
+            fileWriter(newLine, "a+");
+            fileWriter(tabulator + tabulator + glasses, "a+");
+        }
+    } else {
+        console.log("File is empty");
+
+    }
 
     res.render("personal-tracker", {
         glasses: req.body.select
