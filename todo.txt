@@ -1,0 +1,3 @@
+Find way to save glasses drunk between sessions. Reset each day. 
+    Write to file is a potential solution to this.
+Add "urinated" flag when submitting that also gets added to the array.
