@@ -5,7 +5,8 @@ block layout-content
         h1 Personal Tracker
         div.MainView
             form(id="main-form" method="POST" action="/personal-tracker")
-                select(name="select")
+            h4 How many glasses of water have you had? 
+                select(id="select")
                     option(value="1") 1
                     option(value="2") 2
                     option(value="3") 3
@@ -14,4 +15,10 @@ block layout-content
                     option(value="6") 6
                     option(value="7") 7
                     option(value="8") 8
-                button.btn-primary(type="submit") Submit
+                .whitespace(style='white-space:pre;')
+            h4 Have you urinated since last check?        
+                select(name="boolSelect")
+                    option(value="1") Yes 
+                    option(value="0") No
+                .whitespace(style='white-space:pre;')
+            button.btn-primary(type="submit") Submit

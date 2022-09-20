@@ -53,9 +53,9 @@ if (fs.existsSync(file)) {
         fileWriter(newLine, "a+");
     }
 }
-    res.render("index", {
-        title: "Index"
-    });
+res.render("index", {
+    title: "Index"
+});
 });
 
 app.post("/personal-tracker", (req, res) => {
@@ -73,7 +73,8 @@ app.post("/personal-tracker", (req, res) => {
     }
 
     res.render("personal-tracker", {
-        glasses: req.body.select
+        glasses: req.body.select,
+        title: "Personal Tracker"
     });
 });
 
