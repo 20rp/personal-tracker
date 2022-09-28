@@ -2,10 +2,10 @@ extends layout
 
 block layout-content
     div.TitleView
-        h1 Personal Tracker
+        h1.white-font Personal Tracker
         div.MainView
             form(id="main-form" method="POST" action="/personal-tracker")
-            h4 How many glasses of water have you had? 
+            h4.white-font How many glasses of water have you had? 
                 select(id="select")
                     option(value="1") 1
                     option(value="2") 2
@@ -16,9 +16,12 @@ block layout-content
                     option(value="7") 7
                     option(value="8") 8
                 .whitespace(style='white-space:pre;')
-            h4 Have you urinated since last check?        
+            h4.white-font Have you urinated since last check?        
                 select(name="boolSelect")
                     option(value="1") Yes 
                     option(value="0") No
-                .whitespace(style='white-space:pre;')
-            button.btn-primary(type="submit") Submit
+                div.whitespace(style='white-space:pre;')
+                button.btn.btn-primary(type="submit" name="submit-button") Submit
+        div.testView
+            form(method="POST" action="/tester") 
+                button.btn.btn-default(type="submit" name="test-button") Test

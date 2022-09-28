@@ -1,5 +1,5 @@
 body {
-    background-color: rgba(178, 181, 184, 0.311);
+    background: url("img/background.jpg");
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
@@ -7,6 +7,14 @@ body {
     display: grid;
     margin: auto;
     border: solid black 1px;
+    text-align: center;
+}
+
+.white-font {
+    color: white;
+}
+
+.testView {
     text-align: center;
 }
 
