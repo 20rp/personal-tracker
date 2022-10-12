@@ -16,12 +16,10 @@ const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 
 const app = express();
 const port = process.env.PORT || "8000";
-const header = "    Glasses Drunk   |   Time Drunk  |   Day Drunk";
+const header = "Glasses Drunk,Time Drunk,Day Drunk";
 const newLine = "\n";
 const tabulator = "     ";
-const file = 'logs/tracking.txt';
-
-
+const file = "C:\\Users\\awotherspoon\\code\\git\\personal-tracker\\logs\\tracking.csv";
 
 /**
  *  App Configuration
@@ -36,36 +34,32 @@ app.use(express.static(path.join(__dirname, "public")));
 
 function fileWriter(water, urine) {
     var dateTime = dt.create();
-    var formattedDate = dateTime.format('Y-m-d');
-    var formattedTime = dateTime.format('H:M:S');
+    var formattedDate = dateTime.format("Y-m-d'T'H:M:S");
 
     const csvWriter = createCsvWriter({
-        path: 'C:/Users/MG/code/git/personal-tracker/logs/tracking.csv',
+        path: file,
         header: [
-            { id: 'date', title: 'Date recorded' },
-            { id: 'time', title: 'Time recorded' },
-            { id: 'water', title: 'Water intake' },
-            { id: 'urine', title: 'Urination' }
+            { id: 'dateTime', title: 'date_and_time_recorded' },
+            { id: 'water', title: ', water_intake_glasses' },
+            { id: 'urine', title: ', urination' }
         ]
     });
 
     const data = [
         {
-            date: formattedDate,
-            time: formattedTime,
+            dateTime: formattedDate,
             water: water,
-            urine: urine
+            urine: urine,
         }
-    ]
+    ];
 
     csvWriter
         .writeRecords(data)
         .then(() => console.log('The CSV file was written successfully'));
 }
 
-function tester() {  
-   
-    return formattedDt;
+function tester() {
+    fileWriter("8", "Yes");
 }
 
 /**
@@ -73,25 +67,21 @@ function tester() {
  */
 
 app.get("/", (req, res) => {
-
-// if (fs.existsSync(file)) {
-//     if (fs.readFileSync(file).length === 0) {
-//         fileWriter(header, "w+");
-//         fileWriter(newLine, "a+");
-//     }
-// }
-
-res.render("index", {
-    title: "Index"
-});
-});
+    if (fs.existsSync(file)) {
+        console.log("file detected.");
+    } else {
+        console.log("file not detected.");
+    }   
+    res.render("index", {
+        title: "Index"});
+    });
 
 app.post("/tester", (req, res) => {
     tester();
-})
+});
 
 app.post("/personal-tracker", (req, res) => {
-    let glasses = req.body.select;
+    let glasses = req.body.water-select;
     let urination;
 
     if (req.body.boolSelect == 1) {
@@ -100,17 +90,7 @@ app.post("/personal-tracker", (req, res) => {
         urination = "No";
     }
 
-    fileWriter(glasses, urination)
-
-    // if (fs.existsSync(file)) {
-    //     if (fs.readFileSync(file).length > 1) {
-    //         fileWriter(newLine, "a+");
-    //         fileWriter(tabulator + tabulator + glasses, "a+");
-    //     }
-    // } else {
-    //     console.log("File is empty");
-
-    // }
+    fileWriter(glasses, urination);
 
     res.render("personal-tracker", {
         glasses: req.body.select,
