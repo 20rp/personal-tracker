@@ -2,11 +2,11 @@ extends layout
 
 block layout-content
     div.TitleView
-        h1.white-font Personal Tracker
+        h1.white-font Personal Tracker!
         div.MainView
             form(method="POST" action="/personal-tracker")
                 h4.white-font How many glasses of water have you had? 
-                select(id="water-select")
+                select(name="waterSelect")
                     option(value="1") 1
                     option(value="2") 2
                     option(value="3") 3

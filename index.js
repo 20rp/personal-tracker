@@ -16,10 +16,7 @@ const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 
 const app = express();
 const port = process.env.PORT || "8000";
-const header = "Glasses Drunk,Time Drunk,Day Drunk";
-const newLine = "\n";
-const tabulator = "     ";
-const file = "C:\\Users\\awotherspoon\\code\\git\\personal-tracker\\logs\\tracking.csv";
+const file = "C:\\Users\\MG\\code\\git\\personal-tracker\\logs\\tracking.csv";
 
 /**
  *  App Configuration
@@ -32,24 +29,23 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 app.use(express.static(path.join(__dirname, "public")));
 
+const csvWriter = createCsvWriter({
+    path: file,
+    header: [
+        { id: 'dateTime', title: 'date_and_time_recorded' },
+        { id: 'water', title: ' water_intake_glasses' },
+        { id: 'urine', title: ' urination' }
+    ]
+});
+
+
 function fileWriter(water, urine) {
     var dateTime = dt.create();
     var formattedDate = dateTime.format("Y-m-d'T'H:M:S");
 
-    const csvWriter = createCsvWriter({
-        path: file,
-        header: [
-            { id: 'dateTime', title: 'date_and_time_recorded' },
-            { id: 'water', title: ', water_intake_glasses' },
-            { id: 'urine', title: ', urination' }
-        ]
-    });
-
     const data = [
         {
-            dateTime: formattedDate,
-            water: water,
-            urine: urine,
+            dateTime: formattedDate, water: water, urine: urine
         }
     ];
 
@@ -59,7 +55,6 @@ function fileWriter(water, urine) {
 }
 
 function tester() {
-    fileWriter("8", "Yes");
 }
 
 /**
@@ -81,8 +76,8 @@ app.post("/tester", (req, res) => {
 });
 
 app.post("/personal-tracker", (req, res) => {
-    let glasses = req.body.water-select;
-    let urination;
+    var glasses = req.body.waterSelect;
+    var urination;
 
     if (req.body.boolSelect == 1) {
         urination = "Yes";
@@ -93,7 +88,8 @@ app.post("/personal-tracker", (req, res) => {
     fileWriter(glasses, urination);
 
     res.render("personal-tracker", {
-        glasses: req.body.select,
+        glasses: glasses,
+        urination: urination,
         title: "Personal Tracker"
     });
 });

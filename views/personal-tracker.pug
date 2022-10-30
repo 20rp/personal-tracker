@@ -1,5 +1,9 @@
-extends layout 
-
-block layout-content 
+extends layout
+block layout-content
+    var condCheck = #{urination}
     div.WaterView
         h1 You drank #{glasses} glasses of water
+        if condCheck
+            h1 You urinated.
+        else
+            h1 You did not urinate!!!
