@@ -82,7 +82,7 @@ function tester() {
  * Routes Definitions
  */
 
-app.post("/tester", (req, res) => {
+app.get("/tester", (req, res) => {
     if (connection) {
         console.log("connection succeeded.", connection);
     } else {
@@ -101,6 +101,13 @@ app.get("/", (req, res) => {
 
     res.render("login", {
         title: "Login"
+    });
+});
+
+app.get("/index", (req, res) => {
+    res.render("index", {
+        title: "Index - Personal Tracker",
+        urination: req.body.urination
     });
 });
 
@@ -124,7 +131,7 @@ app.post("/auth", (req, res) => {
                 console.log("Login success");
 
                 // Redirect to home page
-                res.redirect("index");
+                res.redirect("/index");
             } else {
                 res.send('Incorrect Username and Password combination.');
             }

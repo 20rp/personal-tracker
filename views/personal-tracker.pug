@@ -1,8 +1,10 @@
 extends layout
 block layout-content
-    var condCheck = #{urination}
+
+    h1 #{urination}
     div.WaterView
         h1 You drank #{glasses} glasses of water
+        //- TODO: Add conditonal operator
         if !condCheck
             h1 You urinated.
         else
