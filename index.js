@@ -13,7 +13,6 @@ const { req } = require("http");
 const bp = require("body-parser");
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 
-
 /**
  * App Variables
  */
@@ -43,8 +42,8 @@ app.use(bp.urlencoded({extended: true}));
 
 const connection = mysql.createConnection({
     host    : 'localhost',
-    user    : 'root',
-    password: 'theRight3ousFury!',
+    user    : 'dbadmin',
+    password: 'm1tarash1',
     database: 'nodelogin'
 });
 
@@ -74,11 +73,22 @@ function fileWriter(water, urine) {
 }
 
 function tester() {
+    connection.query('SELECT * FROM accounts');
+
+    return connection;
 }
 
 /**
  * Routes Definitions
  */
+
+app.post("/tester", (req, res) => {
+    if (connection) {
+        console.log("connection succeeded.", connection);
+    } else {
+        console.log("failed.");
+    }
+});
 
 // TODO: Re-route to login page and check if user auth
 app.get("/", (req, res) => {
@@ -92,38 +102,38 @@ app.get("/", (req, res) => {
     res.render("login", {
         title: "Login"
     });
-
-    console.log(req.body.username);
 });
 
 // http://localhost:3000/auth
 app.post("/auth", (req, res) => {
+    username = req.body.username;
+    password = req.body.password;
+    // Ensure input fields are not left empty
+    if (username && password) {
+        // Execute SQL query for login
+        connection.query('SELECT * FROM accounts WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) throw error;
 
+            // If the account exists
+            if (results.length > 0) {
+                // Authenticate the user
+                req.session.loggedIn = true;
+                req.session.username = username;
 
-    // // Ensure input fields are not left empty
-    // if (username && password) {
-    //     // Execute SQL query for login
-    //     connection.query('SELECT * FROM accounts WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
-    //         // If there is an issue with the query, output the error
-    //         if (error) throw error;
+                console.log("Login success");
 
-    //         // If the account exists
-    //         if (results.length > 0) {
-    //             // Authenticate the user
-    //             req.session.loggedIn = true;
-    //             req.session.username = username;
-
-    //             // Redirect to home page
-    //             res.redirect("/index");
-    //         } else {
-    //             res.send('Incorrect Username and Password combination.');
-    //         }
-    //         res.end();
-    //     });
-    // } else {
-    //     res.send("Please enter Username and Password");
-    //     res.end();
-    // }
+                // Redirect to home page
+                res.redirect("index");
+            } else {
+                res.send('Incorrect Username and Password combination.');
+            }
+            res.end();
+        });
+    } else {
+        res.send("Please enter Username and Password");
+        res.end();
+    }
 });
 
 app.post("/personal-tracker", (req, res) => {
