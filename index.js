@@ -44,7 +44,7 @@ const connection = mysql.createConnection({
     host    : 'localhost',
     user    : 'dbadmin',
     password: 'm1tarash1',
-    database: 'nodelogin'
+    database: 'personal-tracker'
 });
 
 
@@ -57,6 +57,8 @@ const csvWriter = createCsvWriter({
     ]
 });
 
+
+// TODO: Look at writing to a database table instead of a static file.
 function fileWriter(water, urine) {
     var dateTime = dt.create();
     var formattedDate = dateTime.format("Y-m-d'T'H:M:S");
@@ -72,13 +74,17 @@ function fileWriter(water, urine) {
         .then(() => console.log('The CSV file was written successfully'));
 }
 
-function tester() {
-    connection.query('SELECT * FROM accounts');
+function databaseWriter(query) {
+    var query = connection.query(query);
 
-    return connection;
+    console.log(query);
 }
 
-/**
+function tester() {
+    databaseWriter("INSERT INTO `personal-tracker`.`personal_tracker` (`ID`, `water_intake`, `urine?`) VALUES (NULL, 8, true);");
+}
+
+/*
  * Routes Definitions
  */
 
@@ -86,11 +92,11 @@ app.get("/tester", (req, res) => {
     if (connection) {
         console.log("connection succeeded.", connection);
     } else {
-        console.log("failed.");
+        console.log("database connection failed.");
     }
+    tester();
 });
 
-// TODO: Re-route to login page and check if user auth
 app.get("/", (req, res) => {
 
     if (fs.existsSync(file)) {
@@ -111,6 +117,8 @@ app.get("/index", (req, res) => {
     });
 });
 
+// TODO: register button
+// TODO: Add certificate auth function
 // http://localhost:3000/auth
 app.post("/auth", (req, res) => {
     username = req.body.username;
@@ -118,7 +126,7 @@ app.post("/auth", (req, res) => {
     // Ensure input fields are not left empty
     if (username && password) {
         // Execute SQL query for login
-        connection.query('SELECT * FROM accounts WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
+        connection.query('SELECT * FROM users WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) throw error;
 
